@@ -1,0 +1,140 @@
+swagger: "2.0"
+info:
+  title: "inventory service"
+  description: "This service manages a inventory"
+  version: "0.0.1"
+host: "localhost:8080"
+basePath: /
+schemes:
+  - "http"
+paths:
+  /item:
+    post:
+      tags:
+        - "adds item to a cart"
+      description: adds a given item to card and generates a unique if for the same
+      summary: adds item to a cart
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "item"
+          in: body
+          required: true
+          schema:
+            properties:
+              name:
+                description: name of the item.
+                type: string
+                example: Drone
+              quantity:
+                description: number represents quantity of the item.
+                type: integer
+                example: 1
+              unitPrice:
+                description: float value represents the unit price of that item.
+                type: integer
+                example: 4.2
+      responses:
+        201:
+          description: your item has been added to the card.
+        400:
+          description: bad request
+    get:
+      tags:
+        - "gets all item from the cart"
+      description: fetches all items from the cart
+      summary: get items form cart
+      parameters:
+        - name: "pagination"
+          in: query
+          required: false
+          schema:
+            properties:
+              page:
+                description: page to fetch the items
+                type: integer
+                example: 1
+              size:
+                description: number of items per page.
+                type: integer
+                example: 1
+      responses:
+        200:
+          description: fetches all items in a array
+        400:
+          description: bad request
+  /item/{id}:
+    get:
+      tags:
+        - "gets a single item by id"
+      description: "gets single item from the cart using id"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: returns item object for the given item id.
+        400:
+          description: when item id is invalid
+        404:
+          description: when item is not found
+    delete:
+      tags:
+        - "delete a single item by id"
+      description: "delete single item from the cart using id"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: successfully deleted the item.
+        400:
+          description: when item id is invalid
+        404:
+          description: when item is not found
+    patch:
+      tags:
+        - "update a item by id"
+      description: "update a item by id"
+      parameters:
+        - name: "id"
+          in: path
+          required: true
+          type: integer
+        - name: "item"
+          in: body
+          required: true
+          schema:
+            properties:
+              name:
+                description: name of the item.
+                type: string
+                example: Drone
+              quantity:
+                description: number represents quantity of the item.
+                type: integer
+                example: 1
+              unitPrice:
+                description: float value represents the unit price of that item.
+                type: integer
+                example: 4.2
+      responses:
+        200:
+          description: successfully updated item
+        400:
+          description: when item id or item details are invalid
+        404:
+          description: when item is not found
+  /item/csv:
+    get:
+      tags:
+        - "gets all item in a csv"
+      description: fetches all items in a csv
+      summary: fetches all items in a csv
+      responses:
+        200:
+          description: as csv file content
